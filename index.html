@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>普通家庭生存计算器</title>
+<title>家庭风险诊断器</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -21,7 +22,7 @@ body{
     background:#f5f7fb;
     color:#111827;
     line-height:1.6;
-    padding:24px;
+    padding:20px;
 }
 
 .container{
@@ -30,18 +31,16 @@ body{
 }
 
 .hero{
-    padding:48px 32px;
+    background:linear-gradient(135deg,#ffffff 0%,#eef2ff 100%);
     border-radius:28px;
-    background:linear-gradient(135deg,#ffffff 0%,#eef3ff 100%);
-    box-shadow:
-        0 10px 30px rgba(15,23,42,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.7);
-    margin-bottom:28px;
+    padding:48px 32px;
+    margin-bottom:24px;
+    box-shadow:0 10px 30px rgba(15,23,42,.06);
 }
 
 .hero h1{
-    font-size:40px;
-    font-weight:700;
+    font-size:38px;
+    font-weight:800;
     margin-bottom:12px;
 }
 
@@ -62,19 +61,19 @@ body{
     border-radius:24px;
     padding:28px;
     margin-bottom:24px;
-    box-shadow:0 10px 30px rgba(15,23,42,0.05);
-    transition:all .3s ease;
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+    transition:.3s ease;
 }
 
 .card:hover{
     transform:translateY(-2px);
-    box-shadow:0 20px 40px rgba(15,23,42,0.08);
+    box-shadow:0 20px 40px rgba(15,23,42,.08);
 }
 
 .section-title{
     font-size:20px;
-    margin-bottom:18px;
     font-weight:700;
+    margin-bottom:20px;
 }
 
 .grid{
@@ -88,68 +87,65 @@ body{
 }
 
 label{
-    margin-bottom:8px;
     font-size:14px;
+    margin-bottom:8px;
     color:#374151;
 }
 
-input,select{
+input,
+select{
     border:none;
+    outline:none;
     background:#f3f5f9;
     border-radius:14px;
     padding:16px;
     font-size:15px;
-    transition:all .25s ease;
-    outline:none;
+    transition:.25s ease;
 }
 
 input:focus,
 select:focus{
     background:#fff;
     box-shadow:0 0 0 4px rgba(99,102,241,.12);
-    border:1px solid rgba(99,102,241,.25);
 }
 
 button{
     width:100%;
     border:none;
-    padding:18px;
-    border-radius:16px;
     background:#111827;
     color:#fff;
+    padding:18px;
+    border-radius:16px;
     font-size:16px;
-    font-weight:600;
+    font-weight:700;
     cursor:pointer;
-    transition:all .3s ease;
+    transition:.3s ease;
 }
 
 button:hover{
     transform:translateY(-2px);
     background:#1f2937;
-    box-shadow:0 12px 24px rgba(17,24,39,.18);
 }
 
 .result-area{
     display:none;
-    animation:fadeIn .8s ease forwards;
+    animation:fadeIn .8s ease;
 }
 
 .result-main{
     text-align:center;
-    padding:12px 0;
 }
 
 .result-main h3{
     font-size:20px;
-    color:#374151;
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 .result-number{
-    font-size:68px;
-    font-weight:800;
-    letter-spacing:-2px;
-    margin-bottom:8px;
+    font-size:72px;
+    font-weight:900;
+    letter-spacing:-3px;
+    margin-bottom:10px;
 }
 
 .result-sub{
@@ -163,19 +159,8 @@ button:hover{
     padding:10px 20px;
     border-radius:999px;
     color:#fff;
-    font-weight:600;
+    font-weight:700;
     margin-top:18px;
-}
-
-.analysis-list,
-.suggestion-list{
-    padding-left:18px;
-}
-
-.analysis-list li,
-.suggestion-list li{
-    margin-bottom:10px;
-    color:#374151;
 }
 
 .low{
@@ -190,23 +175,40 @@ button:hover{
     background:#dc2626;
 }
 
-.fade-up{
-    animation:fadeUp .8s ease;
+.analysis-list li,
+.suggestion-list li{
+    margin-bottom:12px;
+    color:#374151;
+}
+
+.scenario-box{
+    background:#f8fafc;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:16px;
+}
+
+.scenario-box h4{
+    color:#6b7280;
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.scenario-box .big{
+    font-size:30px;
+    font-weight:800;
+}
+
+.scenario-box p{
+    color:#6b7280;
+    margin-top:8px;
+    font-size:14px;
 }
 
 @keyframes fadeIn{
     from{
         opacity:0;
-    }
-    to{
-        opacity:1;
-    }
-}
-
-@keyframes fadeUp{
-    from{
-        opacity:0;
-        transform:translateY(16px);
+        transform:translateY(20px);
     }
     to{
         opacity:1;
@@ -216,10 +218,6 @@ button:hover{
 
 @media(max-width:768px){
 
-    body{
-        padding:16px;
-    }
-
     .hero{
         padding:36px 24px;
     }
@@ -228,18 +226,15 @@ button:hover{
         font-size:30px;
     }
 
-    .hero h2{
-        font-size:18px;
+    .result-number{
+        font-size:56px;
     }
 
     .card{
         padding:22px;
     }
-
-    .result-number{
-        font-size:54px;
-    }
 }
+
 </style>
 </head>
 
@@ -247,17 +242,18 @@ button:hover{
 
 <div class="container">
 
-    <section class="hero fade-up">
-        <h1>普通家庭生存计算器</h1>
+    <section class="hero">
+        <h1>家庭风险诊断器</h1>
         <h2>如果收入突然停止，你的家庭还能撑多久？</h2>
         <p>帮助普通家庭评估现金流安全感。</p>
     </section>
 
-    <section class="card fade-up">
+    <section class="card">
 
         <div class="section-title">家庭收入</div>
 
         <div class="grid">
+
             <div class="form-group">
                 <label>本人月收入</label>
                 <input type="number" id="selfIncome" placeholder="10000">
@@ -272,15 +268,17 @@ button:hover{
                 <label>其它收入</label>
                 <input type="number" id="otherIncome" placeholder="2000">
             </div>
+
         </div>
 
     </section>
 
-    <section class="card fade-up">
+    <section class="card">
 
         <div class="section-title">每月支出</div>
 
         <div class="grid">
+
             <div class="form-group">
                 <label>房贷</label>
                 <input type="number" id="mortgage">
@@ -300,15 +298,17 @@ button:hover{
                 <label>其它固定支出</label>
                 <input type="number" id="otherCost">
             </div>
+
         </div>
 
     </section>
 
-    <section class="card fade-up">
+    <section class="card">
 
         <div class="section-title">当前资产</div>
 
         <div class="grid">
+
             <div class="form-group">
                 <label>活期存款</label>
                 <input type="number" id="cash">
@@ -318,15 +318,17 @@ button:hover{
                 <label>可快速变现资产</label>
                 <input type="number" id="liquidAssets">
             </div>
+
         </div>
 
     </section>
 
-    <section class="card fade-up">
+    <section class="card">
 
         <div class="section-title">风险选项</div>
 
         <div class="grid">
+
             <div class="form-group">
                 <label>是否计划生孩子</label>
                 <select id="babyPlan">
@@ -350,12 +352,13 @@ button:hover{
                     <option>是</option>
                 </select>
             </div>
+
         </div>
 
     </section>
 
-    <section class="card fade-up">
-        <button onclick="calculate()">开始计算</button>
+    <section class="card">
+        <button onclick="calculate()">开始诊断</button>
     </section>
 
     <div class="result-area" id="resultArea">
@@ -363,6 +366,7 @@ button:hover{
         <section class="card">
 
             <div class="result-main">
+
                 <h3>你的家庭预计可维持</h3>
 
                 <div class="result-number" id="resultNumber">
@@ -376,13 +380,14 @@ button:hover{
                 <div class="risk-badge" id="riskBadge">
                     中等风险
                 </div>
+
             </div>
 
         </section>
 
         <section class="card">
 
-            <div class="section-title">风险分析</div>
+            <div class="section-title">家庭风险分析</div>
 
             <ul class="analysis-list" id="analysisList"></ul>
 
@@ -393,6 +398,14 @@ button:hover{
             <div class="section-title">AI建议</div>
 
             <ul class="suggestion-list" id="suggestionList"></ul>
+
+        </section>
+
+        <section class="card">
+
+            <div class="section-title">人生事件模拟</div>
+
+            <div id="scenarioContent"></div>
 
         </section>
 
@@ -407,6 +420,9 @@ function getValue(id){
 }
 
 function calculate(){
+
+    const selfIncome = getValue('selfIncome');
+    const partnerIncome = getValue('partnerIncome');
 
     const mortgage = getValue('mortgage');
     const carLoan = getValue('carLoan');
@@ -431,48 +447,27 @@ function calculate(){
         liquidAssets;
 
     if(monthlyExpense <= 0){
-        alert('请至少填写家庭日常开销');
+        alert('请填写家庭日常开销');
         return;
     }
 
     const survivalMonths =
         (totalAssets / monthlyExpense).toFixed(1);
 
-    const resultArea =
-        document.getElementById('resultArea');
-
-    resultArea.style.display = 'block';
+    document.getElementById('resultArea').style.display = 'block';
 
     animateNumber(survivalMonths);
 
-    const riskBadge =
-        document.getElementById('riskBadge');
-
-    let riskLevel = '';
-    let riskClass = '';
-
-    if(survivalMonths >= 24){
-        riskLevel = '低风险';
-        riskClass = 'low';
-    }
-    else if(survivalMonths >= 12){
-        riskLevel = '中等风险';
-        riskClass = 'medium';
-    }
-    else{
-        riskLevel = '高风险';
-        riskClass = 'high';
-    }
-
-    riskBadge.innerText = riskLevel;
-    riskBadge.className = 'risk-badge ' + riskClass;
+    generateRiskLevel(survivalMonths);
 
     generateAnalysis(
         survivalMonths,
         mortgage,
         babyPlan,
         singleIncome,
-        layoffRisk
+        layoffRisk,
+        selfIncome,
+        partnerIncome
     );
 
     generateSuggestions(
@@ -480,7 +475,12 @@ function calculate(){
         babyPlan
     );
 
-    resultArea.scrollIntoView({
+    generateScenarioSimulation(
+        monthlyExpense,
+        totalAssets
+    );
+
+    document.getElementById('resultArea').scrollIntoView({
         behavior:'smooth'
     });
 }
@@ -492,8 +492,7 @@ function animateNumber(target){
 
     let current = 0;
 
-    const increment =
-        target / 40;
+    const increment = target / 40;
 
     const timer = setInterval(()=>{
 
@@ -510,12 +509,42 @@ function animateNumber(target){
     },20);
 }
 
+function generateRiskLevel(months){
+
+    const riskBadge =
+        document.getElementById('riskBadge');
+
+    let level = '';
+    let className = '';
+
+    if(months >= 24){
+        level = '低风险';
+        className = 'low';
+    }
+    else if(months >= 12){
+        level = '中等风险';
+        className = 'medium';
+    }
+    else{
+        level = '高风险';
+        className = 'high';
+    }
+
+    riskBadge.innerText =
+        '家庭风险等级：' + level;
+
+    riskBadge.className =
+        'risk-badge ' + className;
+}
+
 function generateAnalysis(
     survivalMonths,
     mortgage,
     babyPlan,
     singleIncome,
-    layoffRisk
+    layoffRisk,
+    selfIncome,
+    partnerIncome
 ){
 
     const analysisList =
@@ -526,28 +555,52 @@ function generateAnalysis(
     const items = [];
 
     if(singleIncome === '是'){
-        items.push('家庭收入来源较单一。');
+        items.push('家庭收入来源较单一，一旦主要收入中断，整体现金流压力会明显增加。');
     }
 
     if(babyPlan === '是'){
-        items.push('未来可能新增育儿支出。');
+        items.push('未来可能新增育儿、医疗与教育支出。');
     }
 
     if(mortgage > 5000){
-        items.push('长期固定负债压力较高。');
+        items.push('长期固定房贷压力较高。');
     }
 
     if(layoffRisk === '是'){
         items.push('当前对未来收入稳定性存在一定担忧。');
     }
 
+    if(selfIncome > partnerIncome * 2){
+        items.push('家庭收入结构明显依赖单一职业。');
+    }
+
     if(survivalMonths < 12){
-        items.push('当前现金流缓冲能力偏弱。');
+        items.push('当前家庭缓冲能力偏弱。');
     }
 
     if(survivalMonths >= 24){
-        items.push('当前家庭具有一定抗风险能力。');
+        items.push('当前家庭具备一定抗风险能力。');
     }
+
+    const summary =
+        document.createElement('li');
+
+    summary.style.fontWeight = '700';
+
+    if(survivalMonths < 12){
+        summary.innerText =
+            '你现在的问题可能不是收入低，而是家庭缓冲空间偏小。';
+    }
+    else if(survivalMonths < 24){
+        summary.innerText =
+            '你的家庭目前处于“还能撑住，但不算轻松”的状态。';
+    }
+    else{
+        summary.innerText =
+            '你的家庭已经具备一定安全垫，但真正的安全感来自持续稳定现金流。';
+    }
+
+    analysisList.appendChild(summary);
 
     items.forEach(item=>{
         const li = document.createElement('li');
@@ -569,8 +622,8 @@ function generateSuggestions(
     const suggestions = [];
 
     if(survivalMonths < 12){
-        suggestions.push('建议优先增加家庭现金储备。');
-        suggestions.push('当前阶段建议控制大额消费。');
+        suggestions.push('建议优先建立12个月以上家庭现金储备。');
+        suggestions.push('当前阶段建议控制大额消费与长期负债。');
     }
 
     if(survivalMonths >= 12){
@@ -578,14 +631,14 @@ function generateSuggestions(
     }
 
     if(survivalMonths >= 24){
-        suggestions.push('当前家庭具有一定缓冲能力，可适度进行长期规划。');
+        suggestions.push('当前家庭具备一定缓冲能力，可以开始长期规划。');
     }
 
     if(babyPlan === '是'){
         suggestions.push('若计划生育，建议提前预留专项预算。');
     }
 
-    suggestions.push('保持稳定现金流，比短期高收益更重要。');
+    suggestions.push('很多家庭真正的问题不是收入低，而是没有足够缓冲空间。');
 
     suggestions.forEach(item=>{
         const li = document.createElement('li');
@@ -593,6 +646,40 @@ function generateSuggestions(
         suggestionList.appendChild(li);
     });
 
+}
+
+function generateScenarioSimulation(
+    monthlyExpense,
+    totalAssets
+){
+
+    const scenarioContent =
+        document.getElementById('scenarioContent');
+
+    const childExpense =
+        monthlyExpense + 3000;
+
+    const childMonths =
+        (totalAssets / childExpense).toFixed(1);
+
+    const layoffMonths =
+        (totalAssets / (monthlyExpense * 1.2)).toFixed(1);
+
+    scenarioContent.innerHTML = `
+
+        <div class="scenario-box">
+            <h4>如果未来新增育儿支出</h4>
+            <div class="big">${childMonths}个月</div>
+            <p>家庭缓冲周期将明显缩短</p>
+        </div>
+
+        <div class="scenario-box">
+            <h4>如果未来收入下降20%</h4>
+            <div class="big">${layoffMonths}个月</div>
+            <p>家庭现金流压力会进一步上升</p>
+        </div>
+
+    `;
 }
 
 </script>
