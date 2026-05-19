@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>家庭风险诊断器</title>
+<title>家庭风险诊断器 · AI生活实验室</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -179,6 +178,7 @@ button:hover{
 .suggestion-list li{
     margin-bottom:12px;
     color:#374151;
+    line-height:1.6;
 }
 
 .scenario-box{
@@ -234,7 +234,6 @@ button:hover{
         padding:22px;
     }
 }
-
 </style>
 </head>
 
@@ -245,90 +244,66 @@ button:hover{
     <section class="hero">
         <h1>家庭风险诊断器</h1>
         <h2>如果收入突然停止，你的家庭还能撑多久？</h2>
-        <p>帮助普通家庭评估现金流安全感。</p>
+        <p>帮助普通家庭评估现金流安全感 · AI 生成个性化建议</p>
     </section>
 
     <section class="card">
-
         <div class="section-title">家庭收入</div>
-
         <div class="grid">
-
             <div class="form-group">
                 <label>本人月收入</label>
                 <input type="number" id="selfIncome" placeholder="10000">
             </div>
-
             <div class="form-group">
                 <label>配偶月收入</label>
                 <input type="number" id="partnerIncome" placeholder="5000">
             </div>
-
             <div class="form-group">
                 <label>其它收入</label>
                 <input type="number" id="otherIncome" placeholder="2000">
             </div>
-
         </div>
-
     </section>
 
     <section class="card">
-
         <div class="section-title">每月支出</div>
-
         <div class="grid">
-
             <div class="form-group">
                 <label>房贷</label>
                 <input type="number" id="mortgage">
             </div>
-
             <div class="form-group">
                 <label>车贷</label>
                 <input type="number" id="carLoan">
             </div>
-
             <div class="form-group">
                 <label>家庭日常开销</label>
                 <input type="number" id="livingCost">
             </div>
-
             <div class="form-group">
                 <label>其它固定支出</label>
                 <input type="number" id="otherCost">
             </div>
-
         </div>
-
     </section>
 
     <section class="card">
-
         <div class="section-title">当前资产</div>
-
         <div class="grid">
-
             <div class="form-group">
                 <label>活期存款</label>
                 <input type="number" id="cash">
             </div>
-
             <div class="form-group">
                 <label>可快速变现资产</label>
                 <input type="number" id="liquidAssets">
             </div>
-
         </div>
-
     </section>
 
     <section class="card">
-
         <div class="section-title">风险选项</div>
-
         <div class="grid">
-
             <div class="form-group">
                 <label>是否计划生孩子</label>
                 <select id="babyPlan">
@@ -336,7 +311,6 @@ button:hover{
                     <option>是</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>是否单收入家庭</label>
                 <select id="singleIncome">
@@ -344,7 +318,6 @@ button:hover{
                     <option>是</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>是否担心未来1年失业</label>
                 <select id="layoffRisk">
@@ -352,9 +325,7 @@ button:hover{
                     <option>是</option>
                 </select>
             </div>
-
         </div>
-
     </section>
 
     <section class="card">
@@ -364,49 +335,29 @@ button:hover{
     <div class="result-area" id="resultArea">
 
         <section class="card">
-
             <div class="result-main">
-
                 <h3>你的家庭预计可维持</h3>
-
-                <div class="result-number" id="resultNumber">
-                    0个月
-                </div>
-
-                <div class="result-sub">
-                    （在完全失去收入情况下）
-                </div>
-
-                <div class="risk-badge" id="riskBadge">
-                    中等风险
-                </div>
-
+                <div class="result-number" id="resultNumber">0个月</div>
+                <div class="result-sub">（在完全失去收入情况下）</div>
+                <div class="risk-badge" id="riskBadge">中等风险</div>
             </div>
-
         </section>
 
         <section class="card">
-
             <div class="section-title">家庭风险分析</div>
-
             <ul class="analysis-list" id="analysisList"></ul>
-
         </section>
 
         <section class="card">
-
-            <div class="section-title">AI建议</div>
-
-            <ul class="suggestion-list" id="suggestionList"></ul>
-
+            <div class="section-title">🧠 AI 深度建议</div>
+            <ul class="suggestion-list" id="suggestionList">
+                <li>填写数据后，AI 将为你生成个性化建议...</li>
+            </ul>
         </section>
 
         <section class="card">
-
             <div class="section-title">人生事件模拟</div>
-
             <div id="scenarioContent"></div>
-
         </section>
 
     </div>
@@ -414,274 +365,193 @@ button:hover{
 </div>
 
 <script>
-
+// ------------------- 工具函数 -------------------
 function getValue(id){
     return Number(document.getElementById(id).value) || 0;
 }
 
-function calculate(){
+// ------------------- 调用 Cloudflare Worker (DeepSeek API) -------------------
+async function getAIAdvice(userData) {
+    const WORKER_URL = 'https://deepseek.272482103.workers.dev';  // 你的 Worker 地址
+    try {
+        const response = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+        const result = await response.json();
+        if (result.success) {
+            return result.advice;
+        } else {
+            console.error('AI 请求失败', result.error);
+            return '⚠️ AI 服务暂时不可用，请稍后重试。';
+        }
+    } catch (error) {
+        console.error('网络错误', error);
+        return '⚠️ 网络连接失败，无法获取 AI 建议。';
+    }
+}
 
+// 显示 AI 建议（覆盖原有内容）
+function updateAIAdvice(adviceText) {
+    const suggestionList = document.getElementById('suggestionList');
+    suggestionList.innerHTML = '';
+    // 将 AI 返回的文本按换行拆分成多个 <li>
+    const lines = adviceText.split(/\n/);
+    for (let line of lines) {
+        if (line.trim() === '') continue;
+        const li = document.createElement('li');
+        li.innerText = line.trim();
+        suggestionList.appendChild(li);
+    }
+}
+
+// ------------------- 核心计算逻辑 -------------------
+async function calculate() {   // 改为 async 以等待 AI 结果
+    // 获取所有输入
     const selfIncome = getValue('selfIncome');
     const partnerIncome = getValue('partnerIncome');
-
+    const otherIncome = getValue('otherIncome');
     const mortgage = getValue('mortgage');
     const carLoan = getValue('carLoan');
     const livingCost = getValue('livingCost');
     const otherCost = getValue('otherCost');
-
     const cash = getValue('cash');
     const liquidAssets = getValue('liquidAssets');
-
     const babyPlan = document.getElementById('babyPlan').value;
     const singleIncome = document.getElementById('singleIncome').value;
     const layoffRisk = document.getElementById('layoffRisk').value;
 
-    const monthlyExpense =
-        mortgage +
-        carLoan +
-        livingCost +
-        otherCost;
+    const monthlyExpense = mortgage + carLoan + livingCost + otherCost;
+    const totalAssets = cash + liquidAssets;
 
-    const totalAssets =
-        cash +
-        liquidAssets;
-
-    if(monthlyExpense <= 0){
-        alert('请填写家庭日常开销');
+    if (monthlyExpense <= 0) {
+        alert('请至少填写“家庭日常开销”');
         return;
     }
 
-    const survivalMonths =
-        (totalAssets / monthlyExpense).toFixed(1);
+    const survivalMonths = (totalAssets / monthlyExpense).toFixed(1);
+    let riskLevel = '';
+    if (survivalMonths >= 24) riskLevel = '低风险';
+    else if (survivalMonths >= 12) riskLevel = '中等风险';
+    else riskLevel = '高风险';
 
-    document.getElementById('resultArea').style.display = 'block';
+    // 显示结果区域
+    const resultArea = document.getElementById('resultArea');
+    resultArea.style.display = 'block';
 
+    // 动画显示生存月数
     animateNumber(survivalMonths);
-
+    // 显示风险等级徽章
     generateRiskLevel(survivalMonths);
+    // 生成固定风险分析（不变）
+    generateAnalysis(survivalMonths, mortgage, babyPlan, singleIncome, layoffRisk, selfIncome, partnerIncome);
+    // 生成人生事件模拟
+    generateScenarioSimulation(monthlyExpense, totalAssets);
 
-    generateAnalysis(
-        survivalMonths,
-        mortgage,
-        babyPlan,
-        singleIncome,
-        layoffRisk,
-        selfIncome,
-        partnerIncome
-    );
+    // 准备发送给 AI 的数据
+    const userDataForAI = {
+        selfIncome, partnerIncome, otherIncome,
+        mortgage, carLoan, livingCost, otherCost,
+        cash, liquidAssets,
+        babyPlan, singleIncome, layoffRisk,
+        survivalMonths: parseFloat(survivalMonths),
+        riskLevel: riskLevel
+    };
 
-    generateSuggestions(
-        survivalMonths,
-        babyPlan
-    );
+    // 显示 AI 加载中
+    const suggestionList = document.getElementById('suggestionList');
+    suggestionList.innerHTML = '<li>🤖 AI 正在分析你的家庭状况，请稍等...</li>';
 
-    generateScenarioSimulation(
-        monthlyExpense,
-        totalAssets
-    );
+    // 异步获取 AI 建议（不阻塞页面滚动）
+    const aiAdvice = await getAIAdvice(userDataForAI);
+    updateAIAdvice(aiAdvice);
 
-    document.getElementById('resultArea').scrollIntoView({
-        behavior:'smooth'
-    });
+    // 滚动到结果区域
+    resultArea.scrollIntoView({ behavior: 'smooth' });
 }
 
-function animateNumber(target){
-
-    const resultNumber =
-        document.getElementById('resultNumber');
-
+// ------------------- 辅助函数（保持原有） -------------------
+function animateNumber(target) {
+    const resultNumber = document.getElementById('resultNumber');
     let current = 0;
-
     const increment = target / 40;
-
-    const timer = setInterval(()=>{
-
+    const timer = setInterval(() => {
         current += increment;
-
-        if(current >= target){
+        if (current >= target) {
             current = target;
             clearInterval(timer);
         }
-
-        resultNumber.innerText =
-            current.toFixed(1) + '个月';
-
-    },20);
+        resultNumber.innerText = current.toFixed(1) + '个月';
+    }, 20);
 }
 
-function generateRiskLevel(months){
-
-    const riskBadge =
-        document.getElementById('riskBadge');
-
+function generateRiskLevel(months) {
+    const riskBadge = document.getElementById('riskBadge');
     let level = '';
     let className = '';
-
-    if(months >= 24){
+    if (months >= 24) {
         level = '低风险';
         className = 'low';
-    }
-    else if(months >= 12){
+    } else if (months >= 12) {
         level = '中等风险';
         className = 'medium';
-    }
-    else{
+    } else {
         level = '高风险';
         className = 'high';
     }
-
-    riskBadge.innerText =
-        '家庭风险等级：' + level;
-
-    riskBadge.className =
-        'risk-badge ' + className;
+    riskBadge.innerText = '家庭风险等级：' + level;
+    riskBadge.className = 'risk-badge ' + className;
 }
 
-function generateAnalysis(
-    survivalMonths,
-    mortgage,
-    babyPlan,
-    singleIncome,
-    layoffRisk,
-    selfIncome,
-    partnerIncome
-){
-
-    const analysisList =
-        document.getElementById('analysisList');
-
+function generateAnalysis(survivalMonths, mortgage, babyPlan, singleIncome, layoffRisk, selfIncome, partnerIncome) {
+    const analysisList = document.getElementById('analysisList');
     analysisList.innerHTML = '';
-
     const items = [];
 
-    if(singleIncome === '是'){
-        items.push('家庭收入来源较单一，一旦主要收入中断，整体现金流压力会明显增加。');
-    }
+    if (singleIncome === '是') items.push('家庭收入来源较单一，一旦主要收入中断，整体现金流压力会明显增加。');
+    if (babyPlan === '是') items.push('未来可能新增育儿、医疗与教育支出。');
+    if (mortgage > 5000) items.push('长期固定房贷压力较高。');
+    if (layoffRisk === '是') items.push('当前对未来收入稳定性存在一定担忧。');
+    if (selfIncome > partnerIncome * 2 && partnerIncome > 0) items.push('家庭收入结构明显依赖单一职业。');
+    if (survivalMonths < 12) items.push('当前家庭缓冲能力偏弱。');
+    if (survivalMonths >= 24) items.push('当前家庭具备一定抗风险能力。');
 
-    if(babyPlan === '是'){
-        items.push('未来可能新增育儿、医疗与教育支出。');
-    }
-
-    if(mortgage > 5000){
-        items.push('长期固定房贷压力较高。');
-    }
-
-    if(layoffRisk === '是'){
-        items.push('当前对未来收入稳定性存在一定担忧。');
-    }
-
-    if(selfIncome > partnerIncome * 2){
-        items.push('家庭收入结构明显依赖单一职业。');
-    }
-
-    if(survivalMonths < 12){
-        items.push('当前家庭缓冲能力偏弱。');
-    }
-
-    if(survivalMonths >= 24){
-        items.push('当前家庭具备一定抗风险能力。');
-    }
-
-    const summary =
-        document.createElement('li');
-
+    const summary = document.createElement('li');
     summary.style.fontWeight = '700';
-
-    if(survivalMonths < 12){
-        summary.innerText =
-            '你现在的问题可能不是收入低，而是家庭缓冲空间偏小。';
+    if (survivalMonths < 12) {
+        summary.innerText = '你现在的问题可能不是收入低，而是家庭缓冲空间偏小。';
+    } else if (survivalMonths < 24) {
+        summary.innerText = '你的家庭目前处于“还能撑住，但不算轻松”的状态。';
+    } else {
+        summary.innerText = '你的家庭已经具备一定安全垫，但真正的安全感来自持续稳定现金流。';
     }
-    else if(survivalMonths < 24){
-        summary.innerText =
-            '你的家庭目前处于“还能撑住，但不算轻松”的状态。';
-    }
-    else{
-        summary.innerText =
-            '你的家庭已经具备一定安全垫，但真正的安全感来自持续稳定现金流。';
-    }
-
     analysisList.appendChild(summary);
-
-    items.forEach(item=>{
+    items.forEach(item => {
         const li = document.createElement('li');
         li.innerText = item;
         analysisList.appendChild(li);
     });
 }
 
-function generateSuggestions(
-    survivalMonths,
-    babyPlan
-){
-
-    const suggestionList =
-        document.getElementById('suggestionList');
-
-    suggestionList.innerHTML = '';
-
-    const suggestions = [];
-
-    if(survivalMonths < 12){
-        suggestions.push('建议优先建立12个月以上家庭现金储备。');
-        suggestions.push('当前阶段建议控制大额消费与长期负债。');
-    }
-
-    if(survivalMonths >= 12){
-        suggestions.push('建议逐步建立副收入来源。');
-    }
-
-    if(survivalMonths >= 24){
-        suggestions.push('当前家庭具备一定缓冲能力，可以开始长期规划。');
-    }
-
-    if(babyPlan === '是'){
-        suggestions.push('若计划生育，建议提前预留专项预算。');
-    }
-
-    suggestions.push('很多家庭真正的问题不是收入低，而是没有足够缓冲空间。');
-
-    suggestions.forEach(item=>{
-        const li = document.createElement('li');
-        li.innerText = item;
-        suggestionList.appendChild(li);
-    });
-
-}
-
-function generateScenarioSimulation(
-    monthlyExpense,
-    totalAssets
-){
-
-    const scenarioContent =
-        document.getElementById('scenarioContent');
-
-    const childExpense =
-        monthlyExpense + 3000;
-
-    const childMonths =
-        (totalAssets / childExpense).toFixed(1);
-
-    const layoffMonths =
-        (totalAssets / (monthlyExpense * 1.2)).toFixed(1);
-
+function generateScenarioSimulation(monthlyExpense, totalAssets) {
+    const scenarioContent = document.getElementById('scenarioContent');
+    const childExpense = monthlyExpense + 3000;
+    const childMonths = (totalAssets / childExpense).toFixed(1);
+    const layoffMonths = (totalAssets / (monthlyExpense * 1.2)).toFixed(1);
     scenarioContent.innerHTML = `
-
         <div class="scenario-box">
             <h4>如果未来新增育儿支出</h4>
             <div class="big">${childMonths}个月</div>
             <p>家庭缓冲周期将明显缩短</p>
         </div>
-
         <div class="scenario-box">
             <h4>如果未来收入下降20%</h4>
             <div class="big">${layoffMonths}个月</div>
             <p>家庭现金流压力会进一步上升</p>
         </div>
-
     `;
 }
-
 </script>
 
 </body>
