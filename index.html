@@ -372,7 +372,7 @@ function getValue(id){
 
 // ------------------- 调用 Cloudflare Worker (DeepSeek API) -------------------
 async function getAIAdvice(userData) {
-    const WORKER_URL = 'https://deepseek.272482103.workers.dev';  // 你的 Worker 地址
+    const WORKER_URL = 'https://api.lifylab.top';  // 你的 Worker 地址
     try {
         const response = await fetch(WORKER_URL, {
             method: 'POST',
